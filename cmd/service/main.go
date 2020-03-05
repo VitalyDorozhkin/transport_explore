@@ -16,8 +16,8 @@ import (
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasthttp/fasthttpadaptor"
 
-	"github.com/VitalyDorozhkin/transportexplore/pkg/service"
-	"github.com/VitalyDorozhkin/transportexplore/pkg/service/httpserver"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/service"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/service/httpserver"
 )
 
 var (

@@ -10,7 +10,7 @@ import (
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
 
-	"github.com/VitalyDorozhkin/transportexplore/pkg/models"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/models"
 )
 
 type errorProcessor2 interface {

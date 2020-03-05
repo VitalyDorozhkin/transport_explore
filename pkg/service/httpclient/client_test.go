@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/valyala/fasthttp"
 
-	"github.com/VitalyDorozhkin/transportexplore/pkg/models"
-	"github.com/VitalyDorozhkin/transportexplore/pkg/service"
-	"github.com/VitalyDorozhkin/transportexplore/pkg/service/httpserver"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/models"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/service"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/service/httpserver"
 )
 
 const (
@@ -28,13 +28,14 @@ const (
 	postOrder    = "PostOrder"
 	getUserCount = "GetUserCount"
 	getOrders    = "GetOrders"
-	ID           = 12
+	goodId       = 12
+	badId        = -12
 )
 
 func Test_client_GetUser(t *testing.T) {
 	t.Run("TestGetUserSuccess", func(t *testing.T) {
-		request := makeGetUserRequest()
-		response := makeResponse()
+		request := makeGetUserRequest(goodId)
+		response := makeGoodResponse()
 		serviceMock := new(service.MockService)
 		serviceMock.On(getUser, context.Background(), request).Return(response, nil)
 		server, client := makeServerClient(serverAddr, serviceMock)
@@ -49,14 +50,32 @@ func Test_client_GetUser(t *testing.T) {
 		resp, err := client.GetUser(context.Background(), request)
 		assert.Equal(t, resp, response)
 		assert.NoError(t, err, "unexpected error:", err)
+	})
 
+	t.Run("TestGetUserFail", func(t *testing.T) {
+		request := makeGetUserRequest(badId)
+		response := makeBadResponse()
+		serviceMock := new(service.MockService)
+		serviceMock.On(getUser, context.Background(), request).Return(response, nil)
+		server, client := makeServerClient(serverAddr, serviceMock)
+		defer func() {
+			err := server.Shutdown()
+			if err != nil {
+				log.Printf("server shut down err: %v", err)
+			}
+		}()
+		time.Sleep(serverLaunchingWaitSleep)
+
+		resp, err := client.GetUser(context.Background(), request)
+		assert.Equal(t, resp, response)
+		assert.NoError(t, err, "unexpected error:", err)
 	})
 }
 
 func Test_client_PostOrder(t *testing.T) {
 	t.Run("TestPostOrderSuccess", func(t *testing.T) {
-		request := makePostOrderRequest()
-		response := makeResponse()
+		request := makePostOrderRequest(goodId)
+		response := makeGoodResponse()
 		serviceMock := new(service.MockService)
 		serviceMock.On(postOrder, context.Background(), request).Return(response, nil)
 		server, client := makeServerClient(serverAddr, serviceMock)
@@ -70,14 +89,31 @@ func Test_client_PostOrder(t *testing.T) {
 		resp, err := client.PostOrder(context.Background(), request)
 		assert.Equal(t, resp, response)
 		assert.NoError(t, err, "unexpected error:", err)
+	})
 
+	t.Run("TestPostOrderFail", func(t *testing.T) {
+		request := makePostOrderRequest(badId)
+		response := makeBadResponse()
+		serviceMock := new(service.MockService)
+		serviceMock.On(postOrder, context.Background(), request).Return(response, nil)
+		server, client := makeServerClient(serverAddr, serviceMock)
+		defer func() {
+			err := server.Shutdown()
+			if err != nil {
+				log.Printf("server shut down err: %v", err)
+			}
+		}()
+		time.Sleep(serverLaunchingWaitSleep)
+		resp, err := client.PostOrder(context.Background(), request)
+		assert.Equal(t, resp, response)
+		assert.NoError(t, err, "unexpected error:", err)
 	})
 }
 
 func Test_client_GetUserCount(t *testing.T) {
 	t.Run("TestGetUserCountSuccess", func(t *testing.T) {
-		request := makeGetUserCountRequest()
-		response := makeResponse()
+		request := makeGetUserCountRequest(goodId)
+		response := makeGoodResponse()
 		serviceMock := new(service.MockService)
 		serviceMock.On(getUserCount, context.Background(), request).Return(response, nil)
 		server, client := makeServerClient(serverAddr, serviceMock)
@@ -92,12 +128,30 @@ func Test_client_GetUserCount(t *testing.T) {
 		resp, err := client.GetUserCount(context.Background(), request)
 		assert.Equal(t, resp, response)
 		assert.NoError(t, err, "unexpected error:", err)
+	})
 
+	t.Run("TestGetUserCountFail", func(t *testing.T) {
+		request := makeGetUserCountRequest(badId)
+		response := makeBadResponse()
+		serviceMock := new(service.MockService)
+		serviceMock.On(getUserCount, context.Background(), request).Return(response, nil)
+		server, client := makeServerClient(serverAddr, serviceMock)
+		defer func() {
+			err := server.Shutdown()
+			if err != nil {
+				log.Printf("server shut down err: %v", err)
+			}
+		}()
+		time.Sleep(serverLaunchingWaitSleep)
+
+		resp, err := client.GetUserCount(context.Background(), request)
+		assert.Equal(t, resp, response)
+		assert.NoError(t, err, "unexpected error:", err)
 	})
 }
 
 func Test_client_GetOrders(t *testing.T) {
-	t.Run("TestGetOrdersSuccess", func(t *testing.T) {
+	t.Run("TestGetOrders", func(t *testing.T) {
 		response := models.Response{}
 		serviceMock := new(service.MockService)
 		serviceMock.On(getOrders, context.Background()).Return(response, nil)
@@ -150,26 +204,33 @@ func makeServerClient(serverAddr string, svc Service) (server *fasthttp.Server, 
 	return
 }
 
-func makeGetUserRequest() *models.GetUserRequest {
+func makeGetUserRequest(id int) *models.GetUserRequest {
 	return &models.GetUserRequest{
-		Id: ID,
+		Id: id,
 	}
 }
 
-func makePostOrderRequest() *models.PostOrderRequest {
+func makePostOrderRequest(id int) *models.PostOrderRequest {
 	return &models.PostOrderRequest{
-		Id: ID,
+		Id: id,
 	}
 }
 
-func makeGetUserCountRequest() *models.GetUserCountRequest {
+func makeGetUserCountRequest(id int) *models.GetUserCountRequest {
 	return &models.GetUserCountRequest{
-		Id: ID,
+		Id: id,
 	}
 }
 
-func makeResponse() models.Response {
+func makeGoodResponse() models.Response {
 	return models.Response{
 		Data: &models.Data{Res: true},
+	}
+}
+
+func makeBadResponse() models.Response {
+	return models.Response{
+		Error:     true,
+		ErrorText: "bad id",
 	}
 }

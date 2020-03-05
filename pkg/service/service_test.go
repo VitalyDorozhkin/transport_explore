@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/VitalyDorozhkin/transportexplore/pkg/models"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/models"
 )
 
 func Test_service_GetUser(t *testing.T) {

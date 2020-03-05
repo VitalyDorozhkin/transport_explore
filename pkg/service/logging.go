@@ -10,7 +10,7 @@ import (
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 
-	"github.com/VitalyDorozhkin/transportexplore/pkg/models"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/models"
 )
 
 // loggingMiddleware wraps Service and logs request information to the provided logger

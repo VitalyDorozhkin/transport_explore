@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"github.com/VitalyDorozhkin/transportexplore/pkg/models"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/models"
 )
 
 type MockService struct {

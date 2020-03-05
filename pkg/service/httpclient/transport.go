@@ -14,7 +14,7 @@ import (
 
 	"github.com/valyala/fasthttp"
 
-	"github.com/VitalyDorozhkin/transportexplore/pkg/models"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/models"
 )
 
 type errorCreator func(status int, format string, v ...interface{}) error

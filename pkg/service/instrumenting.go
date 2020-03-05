@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-kit/kit/metrics"
 
-	"github.com/VitalyDorozhkin/transportexplore/pkg/models"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/models"
 )
 
 // instrumentingMiddleware wraps Service and enables request metrics

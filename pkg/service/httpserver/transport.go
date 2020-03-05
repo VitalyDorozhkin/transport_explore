@@ -11,7 +11,7 @@ import (
 	"github.com/mailru/easyjson"
 	"github.com/valyala/fasthttp"
 
-	"github.com/VitalyDorozhkin/transportexplore/pkg/models"
+	"github.com/VitalyDorozhkin/transport_explore/pkg/models"
 )
 
 type errorCreator func(status int, format string, v ...interface{}) error
@@ -116,7 +116,6 @@ type getUserCountTransport struct {
 
 // DecodeRequest method for decoding requests on server side
 func (t *getUserCountTransport) DecodeRequest(ctx fasthttp.RequestCtx, r *fasthttp.Request) (request models.GetUserCountRequest, err error) {
-	println(ctx.UserValue("id").(string))
 	id := ctx.UserValue("id").(string)
 	request.Id, err = strconv.Atoi(id)
 	if id == "" || err != nil {
